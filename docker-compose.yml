@@ -9,7 +9,7 @@ services:
         image: node:8.16.1-alpine
         working_dir: /var/api
         volumes:
-        - "../api:/var/api"
+        - "./api:/var/api"
         environment:
             MONGO_URI: ${MONGO_URI}
         ports:
