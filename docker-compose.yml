@@ -1,0 +1,19 @@
+version: '3'
+services:
+    mongo:
+        image: mongo:4.0.12-xenial
+        volumes:
+        - "./mongo:/data/db"
+
+    back:
+        image: node:8.16.1-alpine
+        working_dir: /var/api
+        volumes:
+        - "../api:/var/api"
+        environment:
+            MONGO_URI: ${MONGO_URI}
+        ports:
+        - "3000:3000"
+        depends_on:
+        - mongo
+        command: ["sh", "-c", "npm i && npm run start"]
