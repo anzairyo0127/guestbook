@@ -1,8 +1,13 @@
 import * as express from "express";
-export const testRouter = express.Router();
 
+import {testCliet} from "../singletons"
+
+const testRouter = express.Router();
 testRouter.get('/', (req, res)=>{
-    res.send('hoge');
+    const ret = testCliet.raw;
+    res.json({
+        message:ret
+    });
 })
 
 export default testRouter;

@@ -1,9 +1,12 @@
 version: '3'
 services:
-    mongo:
-        image: mongo:4.0.12-xenial
+    postgres:
+        image: postgres:11.5-alpine
+        environment:
+            POSTGRES_PASSWORD: example
+            POSTGRES_DB: demo
         volumes:
-        - "mongo:/data/db"
+        - "postgres:/var/lib/postgresql/data"
 
     back:
         image: node:8.16.1-alpine
@@ -11,12 +14,12 @@ services:
         volumes:
         - "./api:/var/api"
         environment:
-            MONGO_URI: ${MONGO_URI}
+            DATABASE_URL: ${POSTGRES_URI}
         ports:
-        - "3000:3000"
+        - "8888:8888"
         depends_on:
-        - mongo
+        - postgres
         tty: true
 
 volumes:
-    mongo:
+    postgres:
