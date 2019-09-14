@@ -2,25 +2,20 @@ import {Pool} from "pg"
 
 export class TestClient{
     private readonly client:Pool;
-    constructor(PostGress:Pool){
-        this.client = PostGress;
+    constructor(test:Pool){
+        this.client = test;
     }
-    get raw(){
-        this.client.connect((error, client)=>{
-            if (error) {
-                return error.message 
-            } else {
-                client.query('SELECT * FROM test', (error, result)=>{
-                    if (error) {
-                        return error.message
-                    } else {
-                        return result.rows
-                    }
-                });
-            }
+    async rows() {
+        let message;
+        await this.client.query('SELECT * FROM test')
+        .then(function(result){
+            console.log({result})
+            message = result.rows
         })
-        const ret = this.client.query('SELECT * FROM test');
-        return ret 
+        .catch(function(reason){
+            console.log({reason})
+            message = reason.message
+        });
+        return message
     }
-
 }

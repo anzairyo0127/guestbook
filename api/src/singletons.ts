@@ -1,9 +1,7 @@
-import {Pool} from "pg";
+import { Pool } from "pg";
 
 import {TestClient} from "./Models/TestClient"
 
-export let posts: Pool;
-export let users: Pool;
 export let testCliet: TestClient;
 
 export function create_posts(){
