@@ -11,4 +11,14 @@ testRouter.get('/',   async (req, res)=>{
     });
 })
 
+testRouter.get('/:id',   async (req, res)=>{
+    console.log(req.params.id)
+    const ret = await testCliet.row(req.params.id);
+    console.log({ret})
+    res.json({
+        message:ret
+    });
+})
+
+
 export default testRouter;
