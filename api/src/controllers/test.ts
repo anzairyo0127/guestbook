@@ -20,5 +20,13 @@ testRouter.get('/:id',   async (req, res)=>{
     });
 })
 
+testRouter.post('/post',     async (req, res)=>{
+    const name = req.body.name
+    console.log(name);
+    res.json({
+        name:name
+    })
+})
+
 
 export default testRouter;
