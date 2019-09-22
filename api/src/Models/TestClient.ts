@@ -51,4 +51,17 @@ export class TestClient{
         });
         return message
     }
+    async post() {
+        let message;
+        await this.client.query('INSET INTO test () VALUES ()')
+        .then(function(result){
+            console.log({result})
+            message = result.rowCount
+        })
+        .catch(function(reason){
+            console.log({reason})
+            message = reason.message
+        });
+        return message
+    }
 }
