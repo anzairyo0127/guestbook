@@ -18,7 +18,7 @@ export class Posts{
 
     async row(id:string) {
         let message;
-        let query = `SELECT * FROM ${this.tableName} WHERE id=${id} ORDER BY created_at DESC`;
+        let query = `SELECT * FROM ${this.tableName} WHERE id=${id}`;
         console.log({ query })
         await this.client.query(query)
         .then(function(result){
