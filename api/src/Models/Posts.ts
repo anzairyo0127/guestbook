@@ -8,6 +8,12 @@ export interface tableColumn{
     created_at
 }
 
+export interface postColumn{
+    title,
+    text,
+    name,
+}
+
 export class Posts{
     private readonly client:Pool;
     public tableName: String;
@@ -34,7 +40,7 @@ export class Posts{
 
     async rows() {
         let message;
-        await this.client.query(`SELECT * FROM ${this.tableName} ORDER BY created_at ASC`)
+        await this.client.query(`SELECT * FROM ${this.tableName} ORDER BY created_at DESC`)
         .then(function(result){
             console.log({result});
             message = result.rows;
@@ -59,9 +65,9 @@ export class Posts{
         });
         return message
     }
-    async post(insertData: tableColumn) {
+    async post(insertData: postColumn) {
         let message;
-        await this.client.query(`INSET INTO ${this.tableName} (title, text, name) VALUES (${insertData.title}, ${insertData.text}, ${insertData.name})`)
+        await this.client.query(`INSERT INTO ${this.tableName} (title, text, name) VALUES ('${insertData.title}', '${insertData.text}',' ${insertData.name}')`)
         .then(function(result){
             console.log({result})
             message = result.rowCount;

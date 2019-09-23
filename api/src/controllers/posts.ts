@@ -1,6 +1,7 @@
 import * as express from "express";
 
 import {postsClient} from "../singletons"
+import {postColumn} from "../Models/Posts"
 
 const postsRouter = express.Router();
 postsRouter.get('/',   async (req, res)=>{
@@ -18,11 +19,16 @@ postsRouter.get('/',   async (req, res)=>{
 
 
 postsRouter.post('/post', async (req, res)=>{
-    const name = req.body.name
-    console.log(name);
+    const requests:postColumn = {
+        title:req.body.title,
+        text:req.body.text,
+        name:req.body.name
+    };
+    console.log({requests})
+    const ret = await postsClient.post(requests)
     res.json({
-        name:name
-    })
+        message:ret
+    });
 })
 
 
