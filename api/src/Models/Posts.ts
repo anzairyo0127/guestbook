@@ -1,17 +1,17 @@
 import {Pool} from "pg"
 
 export interface tableColumn{
-    id,
-    title,
-    text,
-    name,
-    created_at
+    id:string,
+    title:string,
+    text:string,
+    name:string,
+    created_at:string
 }
 
 export interface postColumn{
-    title,
-    text,
-    name,
+    title:string,
+    text:string,
+    name:string,
 }
 
 export class Posts{

@@ -25,3 +25,4 @@ mongo
 
 # env
 .env
+dist

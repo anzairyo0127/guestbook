@@ -7,7 +7,8 @@ services:
             POSTGRES_DB: demo
         volumes:
         - "postgres:/var/lib/postgresql/data"
-
+        ports:
+        - "5432:5432"
     back:
         image: node:8.16.1-alpine
         working_dir: /var/api/src
