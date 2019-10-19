@@ -17,7 +17,7 @@ services:
         environment:
             DATABASE_URL: ${POSTGRES_URI}
         ports:
-        - "8888:8888"
+        - "${PORT}:${PORT}"
         depends_on:
         - postgres
         tty: true
