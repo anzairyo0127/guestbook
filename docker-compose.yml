@@ -16,8 +16,9 @@ services:
         - "./api:/var/api"
         environment:
             DATABASE_URL: ${POSTGRES_URI}
+            PORT: ${PORT}
         ports:
-        - "${PORT}:${PORT}"
+        - ${PORT}:${PORT}
         depends_on:
         - postgres
         tty: true
