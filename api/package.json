@@ -22,7 +22,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/src/app.js"
+    "start": "node ./dist/src/app.js",
+    "lstart": "DATABASE_URL=postgres://postgres:example@127.0.0.1:5432/demo PORT=8888 node ./dist/src/app.js "
   },
   "author": "",
   "license": "ISC",
