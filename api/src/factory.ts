@@ -1,8 +1,7 @@
 import e from "express";
 import * as bodyParser from "body-parser";
 
-import {create_test, create_posts} from "./singletons"
-import testRouter from "./controllers/test"
+import {create_posts} from "./singletons"
 import postsRouter from "./controllers/posts"
 
 export function createApp(){
@@ -10,8 +9,6 @@ export function createApp(){
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use('/', postsRouter);
-    app.use('/test', testRouter);
-    create_test(<string>process.env.DATABASE_URL);
     create_posts(<string>process.env.DATABASE_URL);
     return app
 };
