@@ -17,6 +17,13 @@ postsRouter.get('/',   async (req, res)=>{
     });
 })
 
+postsRouter.get('/count',   async (req, res)=>{
+    var ret = await postsClient.count();
+    console.log({ret})
+    res.json({
+        message:ret
+    });
+})
 
 postsRouter.post('/post', async (req, res)=>{
     const requests:postColumn = {
@@ -24,11 +31,32 @@ postsRouter.post('/post', async (req, res)=>{
         text:req.body.text,
         name:req.body.name
     };
-    console.log({requests})
-    const ret = await postsClient.post(requests)
-    res.json({
-        message:ret
-    });
+    if (requests) {
+        console.log({requests})
+        const ret = await postsClient.post(requests)
+        res.json({
+            message:ret
+        });
+    } else {
+        res.json({
+            message:"failed"
+        });
+    }
+})
+
+postsRouter.post('/del', async (req, res)=>{
+    const id:string = req.body.id;
+    if(id != undefined){
+        const ret = await postsClient.delete(req.body.id)        
+        console.log({ret})
+        res.json({
+            message:ret
+        });
+    } else {
+        res.json({
+            message:"failed"
+        });
+    } 
 })
 
 

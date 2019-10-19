@@ -65,9 +65,24 @@ export class Posts{
         });
         return message
     }
+
     async post(insertData: postColumn) {
         let message;
         await this.client.query(`INSERT INTO ${this.tableName} (title, text, name) VALUES ('${insertData.title}', '${insertData.text}',' ${insertData.name}')`)
+        .then(function(result){
+            console.log({result})
+            message = result;
+        })
+        .catch(function(reason){
+            console.log({reason});
+            message = reason.message;
+        });
+        return message;
+    }
+
+    async delete(id:string) {
+        let message;
+        await this.client.query(`DELETE FROM ${this.tableName} WHERE id=${id}`)
         .then(function(result){
             console.log({result})
             message = result.rowCount;
