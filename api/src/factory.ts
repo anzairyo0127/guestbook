@@ -10,7 +10,7 @@ export function createApp(){
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use('/', postsRouter);
-    app.use(cors);
+    app.use(cors());
     create_posts(<string>process.env.DATABASE_URL);
     return app
 };
