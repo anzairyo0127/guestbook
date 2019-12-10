@@ -1,14 +1,17 @@
 import { Pool } from "pg";
 
-import {Posts} from "./Models/Posts"
-
+import { Posts } from "./Models/Posts";
+import { DelPosts } from "./Models/DelPosts";
 export let postsClient: Posts;
-
-export function create_users(){
-
-};
+export let delPostsClient: DelPosts;
 
 export function create_posts(uri:string){
-    const conn = new Pool({connectionString: uri});
-    postsClient = new Posts(conn);
+    const conn1 = new Pool({connectionString: uri});
+    const conn2 = new Pool({connectionString: uri});
+    postsClient = new Posts(conn1);
+    delPostsClient = new DelPosts(conn2);
+    postsClient.insertPassword = async (a,b) => {
+        await delPostsClient.insertDelPassword(a,b);
+    }
 };
+

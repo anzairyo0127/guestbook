@@ -10,7 +10,7 @@ services:
         ports:
         - "5432:5432"
     back:
-        image: node:8.16.1-alpine
+        image: node:8.16.2-jessie-slim
         working_dir: /var/api/src
         volumes:
         - "./api:/var/api"

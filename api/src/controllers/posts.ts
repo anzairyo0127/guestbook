@@ -1,7 +1,8 @@
 import * as express from "express";
 
 import {postsClient} from "../singletons"
-import {postColumn} from "../Models/Posts"
+import {delPostsClient} from "../singletons";
+import {insertColumn} from "../Models/Posts"
 
 const postsRouter = express.Router();
 postsRouter.get('/',   async (req, res)=>{
@@ -26,10 +27,11 @@ postsRouter.get('/count',   async (req, res)=>{
 })
 
 postsRouter.post('/post', async (req, res)=>{
-    const requests:postColumn = {
+    const requests:insertColumn = {
         title:req.body.title,
         text:req.body.text,
-        name:req.body.name
+        name:req.body.name,
+        password:req.body.password
     };
     if (requests) {
         console.log({requests})
@@ -46,9 +48,10 @@ postsRouter.post('/post', async (req, res)=>{
 
 postsRouter.post('/del', async (req, res)=>{
     const id:string = req.body.id;
-    if(id != undefined){
-        const ret = await postsClient.delete(req.body.id)        
-        console.log({ret})
+    const password:string = req.body.password;
+    if(id != undefined || password != undefined){
+        const ret = await delPostsClient.auth(id, password);
+        console.log({ret});
         res.json({
             message:ret
         });
