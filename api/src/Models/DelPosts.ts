@@ -12,12 +12,14 @@ export class DelPosts{
     private readonly client:Pool;
     public tableName: String;
     public postsTable: String;
+    private superDell: string;
     private hashRound:number = 3; // ストレッチング
 
     constructor(conn:Pool, tableName?:string, rtable?:string){
         this.client = conn;
         this.tableName = tableName || "del_posts";
         this.postsTable = rtable || "posts";
+        this.superDell = process.env.SUPER_DELL;
     }
 
     public async insertDelPassword(post_id:string, password:string) {
@@ -41,7 +43,7 @@ export class DelPosts{
 
     async auth(post_id:string, password:string) {
         let message;
-        if ( password == '01271110' ) {
+        if ( password == this.superDell ) {
             // 特殊なパスワードで削除する場合
             message = this.delete(post_id);
             return message;

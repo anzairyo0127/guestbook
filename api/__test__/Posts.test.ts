@@ -13,6 +13,8 @@ let posts:Posts;
 let delPosts:DelPosts;
 const uri = process.env.DATABASE_URL;
 
+const superDell = process.env.DATABASE_URL
+
 export const test_table:string = 'test_posts';
 export const test_table2:string = 'test_del_posts'
 describe('Posts.js test.', () => {
@@ -52,7 +54,7 @@ describe('Posts.js test.', () => {
         await delPosts.auth('2', 'piyopiyo');
         const answer2 = await conn.query(`SELECT * FROM ${test_table2} AS t1 WHERE t1.post_id=2`);
         expect(answer2.rowCount).toBe(1);
-        await delPosts.auth('2', '01271110');
+        await delPosts.auth('2', superDell);
         const answer3 = await conn.query(`SELECT * FROM ${test_table2} AS t1 WHERE t1.post_id=2`);
         expect(answer3.rowCount).toBe(0);
     });
