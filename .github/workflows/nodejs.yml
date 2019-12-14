@@ -1,5 +1,6 @@
 name: Node CI 
 on: [push]
+workspace: ./api
 jobs:
   build:
     runs-on: ubuntu-18.04
