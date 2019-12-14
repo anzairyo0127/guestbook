@@ -45,8 +45,6 @@ export class Posts {
     };
     
     async row(id:string) {
-        let message;
-        let count:number;
         let ret:responseJson;
         const query = {
             text:`SELECT * FROM ${this.tableName} WHERE id=$1`,
@@ -54,37 +52,31 @@ export class Posts {
         }
         await this.client.query(query).then((result) => {
             if (result.rowCount == 0) {
-                return this.retJson(404, "Not Found Data.", 0)
+                ret = this.retJson(404, "Not Found Data.", 0);
+            } else {
+                ret = this.retJson(200, result.rows, result.rowCount);
             }
-            message = result.rows;
-            count = result.rowCount;
         }).catch((reason) => {
-            message = reason.message;
-            count = 0;
+            ret = this.retJson(500, "Server Application is Failed.", 0);
         });
-        return this.retJson(200, message, count);
+        return ret;
     }
 
     async rows() {
-        let message;
-        let count:number;
+        let ret:responseJson;
         const query = {
             text: `SELECT * FROM ${this.tableName} ORDER BY created_at DESC`,
             values: []
         }
         await this.client.query(query).then((result) => {
-            message = result.rows;
-            count = result.rowCount;
+            ret = this.retJson(200, result.rows, result.rowCount);
         }).catch( (reason) => {
-            message = reason.message;
-            count = 0;
+            ret = this.retJson(400, reason.message, 0);
         });
-        return this.retJson(200, message, count);
+        return ret;
     }
 
     async post(insertData: insertColumn) {
-        let message;
-        let count:number;
         let ret:responseJson;
         const query = {
             text: `INSERT INTO ${this.tableName} (title, text, name) VALUES ($1, $2, $3)`,
@@ -92,42 +84,18 @@ export class Posts {
         };
         await this.client.query(query).then(async (result) => {
             if(insertData.password) {
-                const lastVal =  await this.getLastVal();
+                const lastVal = await this.getLastVal();
                 this.insertPassword(lastVal, insertData.password);
             };
-            message = 'OK';
-            count = 0
-            ret = this.retJson(200, message, count);
+            ret = this.retJson(200, "OK", 0);
         }).catch((reason) => {
-            message = reason.message;
-            count = 0;
-            ret = this.retJson(400, message, count);
-        });
-        return ret;
-    }
-
-    async delete(id:string) {
-        let message;
-        let count:number;
-        let ret:responseJson;
-        const query = {
-            text:`DELETE FROM ${this.tableName} WHERE id=$1`,
-            values:[id]
-        };
-        await this.client.query(query).then((result) => {
-            message = 'OK';
-            count = result.rowCount
-            ret = this.retJson(200, message, count);
-        }).catch((reason) => {
-            message = reason.message;
-            count = 0;
-            ret = this.retJson(200, message, count);
+            ret = this.retJson(400, reason.message, 0);
         });
         return ret;
     }
 
     async getLastVal() {
-        let message;
+        let message:string;
         const query = {
             text:`SELECT LASTVAL();`,
             values:[]

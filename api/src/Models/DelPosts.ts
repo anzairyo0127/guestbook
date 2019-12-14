@@ -48,11 +48,9 @@ export class DelPosts{
             text: `INSERT INTO ${this.tableName} (post_id, password) VALUES ($1, $2);`,
             values: [post_id, hashedPassword]
         };
-        await this.client.query(query)
-        .then(function(result){
+        await this.client.query(query).then(function(result){
             message = result.rows;
-        })
-        .catch(function(reason){
+        }).catch(function(reason){
             message = reason.message;
         });
         return message;
@@ -60,14 +58,12 @@ export class DelPosts{
 
     async auth(post_id:string, password:string) {
         let message;
-        let count:number;
         let ret:responseJson;
 
         if ( password == this.superDell ) {
             // 特殊なパスワードで削除する場合
             message = await this.delete(post_id);
-            count = 0;
-            ret = this.retJson(200, message, count)
+            ret = this.retJson(200, message, 0)
             return ret;
         } else {
             // 通常のパスワードで削除する場合
@@ -78,23 +74,18 @@ export class DelPosts{
             const searchResult = await this.client.query(query);
             if ( searchResult.rowCount == 0 ){
                 // そもそもパスワードを持っていない場合
-                message = 'This post has no password.'
-                count = 0;
-                ret = this.retJson(404, message, count)
+                ret = this.retJson(404, 'This post has no password.', 0)
                 return ret;
             } else {
                 const hasedPass = await searchResult.rows[0].password;
                 if ( bcrypto.compareSync(password, hasedPass) ){
                     // パスワードが合致する場合
                     message = await this.delete(post_id);
-                    count = 0;
-                    ret = this.retJson(200, message, count)
+                    ret = this.retJson(200, message, 0)
                     return ret;
                 } else {
                     // パスワードが合致しない場合。
-                    message = 'Not match Password';
-                    count = 0;
-                    ret = this.retJson(401, message, count)
+                    ret = this.retJson(401, 'Not match Password', 0)
                     return ret;
                 }
             }    
@@ -102,8 +93,8 @@ export class DelPosts{
     }
 
     private async delete (id:string) {
-        let message;
-        let query = {
+        let message:string;
+        const query = {
             text: `DELETE FROM ${this.postsTable} WHERE id=$1`,
             values: [id]
         }
