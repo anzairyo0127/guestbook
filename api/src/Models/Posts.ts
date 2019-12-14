@@ -47,11 +47,15 @@ export class Posts {
     async row(id:string) {
         let message;
         let count:number;
+        let ret:responseJson;
         const query = {
             text:`SELECT * FROM ${this.tableName} WHERE id=$1`,
             values:[id]
         }
         await this.client.query(query).then((result) => {
+            if (result.rowCount == 0) {
+                return this.retJson(404, "Not Found Data.", 0)
+            }
             message = result.rows;
             count = result.rowCount;
         }).catch((reason) => {
