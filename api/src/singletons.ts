@@ -7,9 +7,8 @@ export let delPostsClient: DelPosts;
 
 export function create_posts(uri:string){
     const conn1 = new Pool({connectionString: uri});
-    const conn2 = new Pool({connectionString: uri});
     postsClient = new Posts(conn1);
-    delPostsClient = new DelPosts(conn2);
+    delPostsClient = new DelPosts(conn1);
     postsClient.insertPassword = async (a,b) => {
         await delPostsClient.insertDelPassword(a,b);
     }

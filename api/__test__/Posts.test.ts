@@ -13,7 +13,7 @@ let posts:Posts;
 let delPosts:DelPosts;
 const uri = process.env.DATABASE_URL;
 
-const superDell = process.env.DATABASE_URL
+const superDell = process.env.SUPER_DELL;
 
 export const test_table:string = 'test_posts';
 export const test_table2:string = 'test_del_posts'
@@ -30,18 +30,17 @@ describe('Posts.js test.', () => {
     });
     test('Posts.row()', async () => {
         const testRow = await posts.row('1');
-        expect(testRow[0].id).toBe(1);
-        expect(testRow[0].title).toBe('タイトルテスト');
-        expect(testRow[0].text).toBe('テストです');
-        expect(testRow[0].name).toBe('テスト人');
+        expect(testRow.message[0].id).toBe(1);
+        expect(testRow.message[0].title).toBe('タイトルテスト');
+        expect(testRow.message[0].text).toBe('テストです');
+        expect(testRow.message[0].name).toBe('テスト人');
     });
     test('Posts.post()', async () => {
         const a = await posts.post({title:'titletest', text:'texttest', name:'nametest'});
         const testRow = await posts.rows();
-        // [0] == latest row
-        expect(testRow[0].title).toBe('titletest');
-        expect(testRow[0].text).toBe('texttest');
-        expect(testRow[0].name).toBe('nametest');
+        expect(testRow.message[0].title).toBe('titletest');
+        expect(testRow.message[0].text).toBe('texttest');
+        expect(testRow.message[0].name).toBe('nametest');
     });
     test('DelPosts.insertDelPassword()', async () => {
         await delPosts.insertDelPassword('1','hogehoge');

@@ -2,28 +2,18 @@ import * as express from "express";
 
 import {postsClient} from "../singletons"
 import {delPostsClient} from "../singletons";
-import {insertColumn} from "../Models/Posts"
+import {insertColumn, responseJson} from "../Models/Posts"
 
 const postsRouter = express.Router();
-postsRouter.get('/',   async (req, res)=>{
-    console.log(req.query.id);
-    if (req.query.id){
-        var ret = await postsClient.row(req.query.id);
-    } else {
-        var ret = await postsClient.rows();
-    }
-    console.log({ret})
-    res.json({
-        message:ret
-    });
-})
 
-postsRouter.get('/count',   async (req, res)=>{
-    var ret = await postsClient.count();
-    console.log({ret})
-    res.json({
-        message:ret
-    });
+postsRouter.get('/', async (req, res)=>{
+    let ret: responseJson;
+    if (req.query.id) {
+        ret = await postsClient.row(req.query.id);
+    } else {
+        ret = await postsClient.rows();
+    }
+    res.status(ret.status).json(ret);
 })
 
 postsRouter.post('/post', async (req, res)=>{
@@ -34,30 +24,30 @@ postsRouter.post('/post', async (req, res)=>{
         password:req.body.password
     };
     if (requests) {
-        console.log({requests})
         const ret = await postsClient.post(requests)
-        res.json({
+        res.status(200).json({
             message:ret
         });
     } else {
-        res.json({
+        res.status(400).json({
             message:"failed"
         });
     }
 })
 
 postsRouter.post('/del', async (req, res)=>{
-    const id:string = req.body.id;
-    const password:string = req.body.password;
-    if(id != undefined || password != undefined){
-        const ret = await delPostsClient.auth(id, password);
-        console.log({ret});
+    if(req.body.id != undefined || req.body.password != undefined){
+        const ret = await delPostsClient.auth(req.body.id, req.body.password);
         res.json({
             message:ret
         });
     } else {
-        res.json({
-            message:"failed"
+        const date = new Date();
+        res.status(401).json({
+            status: 401,
+            message: 'failed',
+            date: date.toISOString(),
+            count:0
         });
     } 
 })

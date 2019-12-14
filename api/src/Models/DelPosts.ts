@@ -8,6 +8,13 @@ export interface DelPostsColumn{
     created_at:string,
 }
 
+export interface responseJson {
+    status:number,
+    date:string,
+    message,
+    count:number,
+}
+
 export class DelPosts{
     private readonly client:Pool;
     public tableName: String;
@@ -22,6 +29,18 @@ export class DelPosts{
         this.superDell = process.env.SUPER_DELL;
     }
 
+    retJson (status:number, message, count:number) {
+        let ret:responseJson;
+        const date = new Date();
+        ret = {
+            status,
+            date: date.toISOString(),
+            message,
+            count
+        }
+        return ret;
+    };
+
     public async insertDelPassword(post_id:string, password:string) {
         let message;
         const hashedPassword = bcrypto.hashSync(password, this.hashRound);
@@ -31,11 +50,9 @@ export class DelPosts{
         };
         await this.client.query(query)
         .then(function(result){
-            console.log({result})
             message = result.rows;
         })
         .catch(function(reason){
-            console.log({reason});
             message = reason.message;
         });
         return message;
@@ -43,10 +60,15 @@ export class DelPosts{
 
     async auth(post_id:string, password:string) {
         let message;
+        let count:number;
+        let ret:responseJson;
+
         if ( password == this.superDell ) {
             // 特殊なパスワードで削除する場合
-            message = this.delete(post_id);
-            return message;
+            message = await this.delete(post_id);
+            count = 0;
+            ret = this.retJson(200, message, count)
+            return ret;
         } else {
             // 通常のパスワードで削除する場合
             let query = {
@@ -56,18 +78,24 @@ export class DelPosts{
             const searchResult = await this.client.query(query);
             if ( searchResult.rowCount == 0 ){
                 // そもそもパスワードを持っていない場合
-                message = 'Not found posts.id'
-                return message;
+                message = 'This post has no password.'
+                count = 0;
+                ret = this.retJson(404, message, count)
+                return ret;
             } else {
-                const hasedPass = searchResult.rows[0].password;
+                const hasedPass = await searchResult.rows[0].password;
                 if ( bcrypto.compareSync(password, hasedPass) ){
                     // パスワードが合致する場合
-                    message = this.delete(post_id);
-                    return message;
+                    message = await this.delete(post_id);
+                    count = 0;
+                    ret = this.retJson(200, message, count)
+                    return ret;
                 } else {
                     // パスワードが合致しない場合。
                     message = 'Not match Password';
-                    return message;
+                    count = 0;
+                    ret = this.retJson(401, message, count)
+                    return ret;
                 }
             }    
         }
@@ -79,13 +107,9 @@ export class DelPosts{
             text: `DELETE FROM ${this.postsTable} WHERE id=$1`,
             values: [id]
         }
-        await this.client.query(query)
-        .then(function(result){
-            console.log({result})
-            message = result.rows;
-        })
-        .catch(function(reason){
-            console.log({reason});
+        await this.client.query(query).then((result) => {
+            message = 'OK';
+        }).catch((reason) => {
             message = reason.message;
         });
         return message;

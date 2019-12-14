@@ -10,11 +10,13 @@ services:
         ports:
         - "5432:5432"
     back:
-        image: node:8.16.2-jessie-slim
+        image: node:12.13.1-buster-slim
         working_dir: /var/api/src
         volumes:
         - "./api:/var/api"
         environment:
+            SUPER_DELL: ${SUPER_DELL}
+            END_POINT_URL: ${END_POINT_URL}
             DATABASE_URL: ${POSTGRES_URI}
             PORT: ${PORT}
         ports:
