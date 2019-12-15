@@ -25,7 +25,7 @@ postsRouter.post('/post', async (req, res)=>{
     };
     if (requests) {
         const ret = await postsClient.post(requests)
-        res.status(200).json(ret);
+        res.status(ret.status).json(ret);
     } else {
         res.status(400).json({
             message:"failed"
@@ -36,7 +36,7 @@ postsRouter.post('/post', async (req, res)=>{
 postsRouter.post('/del', async (req, res)=>{
     if(req.body.id != undefined || req.body.password != undefined){
         const ret = await delPostsClient.auth(req.body.id, req.body.password);
-        res.json(ret);
+        res.status(ret.status).json(ret);
     } else {
         const date = new Date();
         res.status(401).json({
