@@ -25,9 +25,7 @@ postsRouter.post('/post', async (req, res)=>{
     };
     if (requests) {
         const ret = await postsClient.post(requests)
-        res.status(200).json({
-            message:ret
-        });
+        res.status(200).json(ret);
     } else {
         res.status(400).json({
             message:"failed"
