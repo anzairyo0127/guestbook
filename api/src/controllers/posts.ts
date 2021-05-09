@@ -9,7 +9,7 @@ const postsRouter = express.Router();
 postsRouter.get('/', async (req, res)=>{
     let ret: responseJson;
     if (req.query.id) {
-        ret = await postsClient.row(req.query.id);
+        ret = await postsClient.row(req.query.id[0]);
     } else {
         ret = await postsClient.rows();
     }
