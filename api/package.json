@@ -3,26 +3,28 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^9.0.0",
     "express": "^4.17.1",
-    "pg": "^8.0.0",
-    "typescript": "^3.8.3"
+    "pg": "^8.6.0",
+    "typescript": "^4.2.4"
   },
   "devDependencies": {
-    "@databases/pg-test": "^1.0.3",
+    "@databases/pg-test": "^3.0.0",
     "@nearform/no-gres": "^3.0.0",
-    "@types/bcrypt": "^3.0.0",
+    "@types/bcrypt": "^3.0.1",
     "@types/body-parser": "^1.19.0",
-    "@types/cors": "^2.8.6",
-    "@types/express": "^4.17.4",
-    "@types/jest": "^25.2.1",
-    "@types/node": "^13.11.1",
-    "@types/pg": "^7.14.3",
-    "jest": "^25.2.7",
+    "@types/cors": "^2.8.10",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.0.2",
+    "@types/pg": "^7.14.11",
+    "jest": "^26.6.3",
     "pg-testdb": "^1.0.4",
-    "ts-jest": "^25.3.1"
+    "ts-jest": "^26.5.6"
   },
   "scripts": {
     "build": "tsc",
